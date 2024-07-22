@@ -341,29 +341,29 @@ namespace VIP
                 status = $" {ChatColors.Red} Inactive";
                 status_i = 0;
             }
-            player.PrintToChat($" {ChatColors.Green}==!-!=={ChatColors.Lime} VIP {ChatColors.Default}Status {ChatColors.Green}==!-!==");
-            player.PrintToChat($" {ChatColors.Gold}» {ChatColors.Default}You have {status}{ChatColors.Default} VIP Status.");
+            player.PrintToChat($" {ChatColors.Green}==!-!=={ChatColors.Lime} VIP {ChatColors.Default}Clutch Arena {ChatColors.Green}==!-!==");
+            player.PrintToChat($" {ChatColors.Gold}» {ChatColors.Default}Sua VIP está: {status}{ChatColors.Default}");
             if(status_i == 1)
             {
-                player.PrintToChat($" {ChatColors.Gold}» {ChatColors.Default}Your {ChatColors.Lime}VIP have time {formating}{ChatColors.Default}.");
-                player.PrintToChat($" {ChatColors.Gold}» {ChatColors.Default}Your {ChatColors.Lime}VIP {ChatColors.Default}group {ChatColors.Green}{get_name_group(player)}{ChatColors.Default}.");
-                player.PrintToChat($" {ChatColors.Gold}▼ {ChatColors.Lime}Yours command available for you{ChatColors.Gold} ▼");
-                if (get_vip_group(player) >= Config.CommandOnGroup.Weapons)
-                {
-                    player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Selecting weapons : {ChatColors.Lime}/weapon {ChatColors.Default}1,2,3,4,5{ChatColors.Gold} ◄");
-                }
-                if (get_vip_group(player) >= Config.CommandOnGroup.Pack )
-                {
-                    player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Selecting package : {ChatColors.Lime}/pack {ChatColors.Default}1,2{ChatColors.Gold} ◄");
-                }
-                if (get_vip_group(player) >= Config.CommandOnGroup.Respawn || Config.RespawnAllowed)
-                {
-                    player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Respawn on spawn  : {ChatColors.Lime}/respawnvip{ChatColors.Gold} ◄");
-                }
-                player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Turn of auto wep. : {ChatColors.Lime}/guns_off{ChatColors.Gold} ◄");
+                player.PrintToChat($" {ChatColors.Gold}» {ChatColors.Default}O Tempo de {ChatColors.Lime}duração da sua VIP é {formating}{ChatColors.Default}.");
+                player.PrintToChat($" {ChatColors.Gold}» {ChatColors.Default}Sua {ChatColors.Lime}TAG {ChatColors.Default}de VIP é {ChatColors.Green}{get_name_group(player)}{ChatColors.Default}.");
+                //player.PrintToChat($" {ChatColors.Gold}▼ {ChatColors.Lime}Yours command available for you{ChatColors.Gold} ▼");
+                //if (get_vip_group(player) >= Config.CommandOnGroup.Weapons)
+                //{
+                //    player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Selecting weapons : {ChatColors.Lime}/weapon {ChatColors.Default}1,2,3,4,5{ChatColors.Gold} ◄");
+                //}
+                //if (get_vip_group(player) >= Config.CommandOnGroup.Pack )
+                //{
+                //    player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Selecting package : {ChatColors.Lime}/pack {ChatColors.Default}1,2{ChatColors.Gold} ◄");
+                //}
+                //if (get_vip_group(player) >= Config.CommandOnGroup.Respawn || Config.RespawnAllowed)
+                //{
+                //    player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Respawn on spawn  : {ChatColors.Lime}/respawnvip{ChatColors.Gold} ◄");
+                //}
+                //player.PrintToChat($" {ChatColors.Gold}► {ChatColors.Default}Turn of auto wep. : {ChatColors.Lime}/guns_off{ChatColors.Gold} ◄");
 
             }
-            player.PrintToChat($" {ChatColors.Green}==!-!=={ChatColors.Lime} VIP {ChatColors.Default}Status {ChatColors.Green}==!-!==");
+            player.PrintToChat($" {ChatColors.Green}==!-!=={ChatColors.Lime} VIP {ChatColors.Default}Clutch Arena {ChatColors.Green}==!-!==");
 
 
         }
