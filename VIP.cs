@@ -268,6 +268,7 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
     }
     public void Authorization_Client(CCSPlayerController player)
     {
+        WriteColor($"VIP PLugins - Player [{player.PlayerName}] Connectando...", ConsoleColor.Green);
         var client = player.Index;
         LoadPlayerData(player);
         var slots = Server.MaxPlayers;
@@ -321,9 +322,9 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
         else if (Config.ReservedMethod == 2)
         {
             bool kicked = false;
-            if (ConnectedPlayers == Server.MaxPlayers)
+            if (ConnectedPlayers >= slots)
             {
-                if (IsVIP[client] == 1)
+                if (IsVIP[client] == 1 && HaveReservation[client] == 1)
                 {
                     foreach (var l_player in Utilities.GetPlayers())
                     {
@@ -406,7 +407,7 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
             UserBhop[client] = 1;
             UserHit[client] = 1;
             UserSmoke[client] = 1;
-            if (Config.CommandOnGroup.ReservedSlots > get_vip_group(player))
+            if (Config.CommandOnGroup.ReservedSlots >= get_vip_group(player))
             {
                 HaveReservation[client] = 1;
             }
