@@ -155,82 +155,6 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
             Authorization_Client(player);
         });
 
-        RegisterListener<Listeners.OnTick>(() =>
-        {
-            for (int i = 1; i < Server.MaxPlayers; i++)
-            {
-                var ent = NativeAPI.GetEntityFromIndex(i);
-                if (ent == 0)
-                    continue;
-
-                var client = new CCSPlayerController(ent);
-                if (client == null || !client.IsValid)
-                    continue;
-                if (IsVIP[client.Index] == 0)
-                    return;
-                OnTick(client);
-                if (UserBhop[client.Index] == 1)
-                {
-                    if (Config.CommandOnGroup.BHop < get_vip_group(client))
-                    {
-                        TryBhop(client);
-                    }
-                }
-
-                if (allowedHit[client.Index] == true)
-                {
-                    var clienti = client.Index;
-                    if (UserHit[clienti] != 1)
-                        return;
-                    client.PrintToCenterHtml(
-                        $"<font color='green'>Player :</font> <font color='gold'>{damaged_player[clienti]}</font><br>" +
-                        $"<font color='green'>Take HP :</font> <font color='red'>-{damage[clienti]}</font><br>" +
-                        $"<font color='green'>Take Armor :</font> <font color='red'>-{armor[clienti]}</font>");
-                }
-                if (!Config.Bombinfo)
-                    return;
-                if (Bomb)
-                {
-                    if (allow_bombinfo[client.Index] == 1)
-                    {
-                        if (bombtime >= 25)
-                        {
-                            client.PrintToCenterHtml(
-                            $"<font color='gray'>Bomb detonating</font> <font class='fontSize-l' color='green'>{bombtime}</font><br>" +
-                            $"<font color='gray'>Planted on site</font> <font class='fontSize-m' color='green'>[{SitePlant}]</font>"
-                            );
-                        }
-                        else if (bombtime >= 10)
-                        {
-                            client.PrintToCenterHtml(
-                            $"<font color='green'>Bomb detonating</font> <font class='fontSize-l' color='orange'>{bombtime}</font><br>" +
-                            $"<font color='orange'>Timer is</font> <font color='white'>smaller</font><br>" +
-                            $"<font color='gray'>Planted on site</font> <font class='fontSize-m' color='orange'>[{SitePlant}]</font>");
-                        }
-                        else if (bombtime >= 5)
-                        {
-                            client.PrintToCenterHtml(
-                            $"<font color='gold'>Bomb detonating</font> <font class='fontSize-l' color='red'>{bombtime}</font><br>" +
-                            $"<font color='white'>Last change</font> <font color='orange'>TO DEFUSE!</font><br>" +
-                            $"<font color='gold'>Planted on site</font> <font class='fontSize-m' color='red'>[{SitePlant}]</font>");
-                        }
-                        else if (bombtime >= 0)
-                        {
-                            client.PrintToCenterHtml(
-                            $"<font color='gold'>Bomb detonating</font> <font class='fontSize-l' color='red'>{bombtime}</font><br>" +
-                            $"<font color='white'>All on site is</font> <font color='orange'>DEAD!</font><br>" +
-                            $"<font color='gold'>Planted on site</font> <font class='fontSize-m' color='red'>[{SitePlant}]</font>");
-                        }
-                        else if (bombtime == 0)
-                        {
-                            Bomb = false;
-                        }
-                    }
-                }
-            }
-        });
-
-
         if (hotReload)
         {
             RegisterListener<Listeners.OnMapStart>(name =>
@@ -253,19 +177,6 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
         return res.ToString();
     }
 
-    public static void TryBhop(CCSPlayerController controller)
-    {
-        if (!controller.PawnIsAlive)
-            return;
-        var buttons = controller.Buttons;
-        var client = controller.Index;
-        var PP = controller.PlayerPawn.Value;
-        var flags = (PlayerFlags)PP!.Flags;
-        if ((flags & PlayerFlags.FL_ONGROUND) != 0 && (buttons & PlayerButtons.Jump) != 0)
-        {
-            PP!.AbsVelocity.Z = 300;
-        }
-    }
     public void Authorization_Client(CCSPlayerController player)
     {
         WriteColor($"VIP PLugins - Player [{player.PlayerName}] Connectando...", ConsoleColor.Green);
@@ -359,41 +270,12 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
             return;
         }
     }
-    public static void OnTick(CCSPlayerController controller)
-    {
-        if (!controller.PawnIsAlive)
-            return;
-        var pawn = controller.Pawn.Value;
-        var flags = (PlayerFlags)pawn.Flags;
-        var client = controller.Index;
-        var buttons = controller.Buttons;
 
-        if (IsVIP[client] == 0)
-            return;
-        if (HaveDoubble[client] != 0)
-        {
-            if ((LF[client] & PlayerFlags.FL_ONGROUND) != 0 && (flags & PlayerFlags.FL_ONGROUND) == 0 &&
-                (buttons & PlayerButtons.Jump) == 0 && (buttons & PlayerButtons.Jump) != 0)
-            {
-                J[client]++;
-            }
-            else if ((flags & PlayerFlags.FL_ONGROUND) != 0)
-            {
-                J[client] = 0;
-            }
-            else if ((LB[client] & PlayerButtons.Jump) == 0 && (buttons & PlayerButtons.Jump) != 0 && J[client] <= 1)
-            {
-                J[client]++;
-                pawn.AbsVelocity.Z = 320;
-            }
-            LF[client] = flags;
-            LB[client] = buttons;
-        }
-    }
     internal static CCSGameRules GameRules()
     {
         return Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First().GameRules!;
     }
+
     public void LoadPlayerData(CCSPlayerController player)
     {
         MySqlDb MySql = new MySqlDb(Config.DBHost, Config.DBUser, Config.DBPassword, Config.DBDatabase);
@@ -450,39 +332,7 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
             WriteColor($"VIP Plugin - Player [{player.PlayerName} ({player.SteamID})] is not VIP.", ConsoleColor.Yellow);
         }
     }
-    public static void RemoveWeapons(CCSPlayerController? player)
-    {
-        foreach (var weapon in player.PlayerPawn.Value.WeaponServices!.MyWeapons)
-        {
-            if (weapon is { IsValid: true, Value.IsValid: true })
-            {
-                if (!weapon.Value.DesignerName.Contains("bayonet") || !weapon.Value.DesignerName.Contains("knife"))
-                { continue; }
-                weapon.Value.Remove();
-                Server.PrintToConsole($"{player.PlayerName} remove weapon {weapon.Value.DesignerName}");
-            }
-        }
-    }
-    private bool CheckIsHaveWeapon(string weapon_name, CCSPlayerController? pc)
-    {
-        if (pc == null || !pc.IsValid)
-            return false;
 
-        var pawn = pc.PlayerPawn.Value.WeaponServices!;
-        foreach (var weapon in pawn.MyWeapons)
-        {
-            if (weapon is { IsValid: true, Value.IsValid: true })
-            {
-                if (weapon.Value.DesignerName.Contains($"{weapon_name}"))
-                {
-                    WriteColor($"VIP Plugin - Requested weapon is [weapon_{weapon_name}]", ConsoleColor.Cyan);
-                    WriteColor($"VIP Plugin - {pc.PlayerName} have weapon with name [{weapon.Value.DesignerName}]", ConsoleColor.Cyan);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
     private void OnEntitySpawned(CEntityInstance entity)
     {
         if (!Config.EnableVIPColoredSmokes) return;
@@ -523,44 +373,6 @@ public partial class VIP : BasePlugin, IPluginConfig<ConfigVIP>
         }
 
         return message;
-    }
-
-    private void Give_Values(CCSPlayerController controller)
-    {
-        if (controller == null || !controller.IsValid || controller.IsBot)
-            return;
-
-        var client = controller.Index;
-        if (IsVIP[client] == 1)
-        {
-            if (Config.EnableVIPAcceries)
-            {
-                if (Config.CommandOnGroup.Acceries > get_vip_group(controller)) return;
-                //controller.PlayerPawn.Value.Health = Config.RewardsClass.SpawnHP;
-                set_armor(controller, Config.RewardsClass.SpawnArmor);
-                controller.PlayerPawn.Value.Health = Config.RewardsClass.SpawnHP;
-
-                if (get_money(controller) <= 800)
-                {
-                    set_money(controller, Config.RewardsClass.FirstSpawnMoney);
-                }
-                if (controller.TeamNum == 3)
-                {
-                    GiveItem(controller, "item_defuser");
-                }
-                if (LastUsed[client] != 2 || LastUsed[client] != 3)
-                {
-                    foreach (var weapon in Config.SpawnItems)
-                    {
-                        if (CheckIsHaveWeapon($"{weapon}", controller) == false)
-                        {
-                            controller.GiveNamedItem($"{weapon}");
-                        }
-                    }
-                }
-            }
-        }
-
     }
     // Database settings
 }

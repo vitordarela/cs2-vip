@@ -43,18 +43,10 @@ namespace VIP
         static public void settings_menu_open(CCSPlayerController? player)
         {
             var client = player.Index;
-            var bhop = "";
-            var trials = "";
-            var shooot = "";
-            var hit = "";
             var smoke = "";
-            if (UserBhop[client] == 1) { bhop = "Disable"; } else { bhop = "Enable"; }
-            if (UserHit[client] == 1) { hit = "Disable"; } else { hit = "Enable"; }
             if (UserSmoke[client] == 1) { smoke = "Disable"; } else { smoke = "Enable"; }
             var sett_menu = new ChatMenu("-- [ VIP SETTINGS ] --");
-            sett_menu.AddMenuOption($"[{bhop}] AutoBhop", sett_handle);
             sett_menu.AddMenuOption($"[{smoke}] Colored smokes", sett_handle);
-            sett_menu.AddMenuOption($"[{hit}] Center hit info", sett_handle);
 
 
             ChatMenus.OpenMenu(player, sett_menu);
@@ -62,18 +54,12 @@ namespace VIP
         public static void sett_handle(CCSPlayerController player, ChatMenuOption option)
         {
             var client = player.Index;
-            if (option.Text.Contains("AutoBhop"))
-            {
-                if (UserBhop[client] == 1) { UserBhop[client] = 0; } else { UserBhop[client] = 1; }
-            }
+            
             if (option.Text.Contains("smokes"))
             {
                 if (UserSmoke[client] == 1) { UserSmoke[client] = 0; } else { UserSmoke[client] = 1; }
             }
-            if (option.Text.Contains("hit info"))
-            {
-                if (UserHit[client] == 1) { UserHit[client] = 0; } else { UserHit[client] = 1; }
-            }
+           
         }
     }
 }
