@@ -122,7 +122,7 @@ namespace VIP
 
             player.PrintToChat($" {ChatColors.Green}www.ClutchArena.com.br");
             player.PrintToChat($" {ChatColors.White}Olá {ChatColors.LightYellow}{player.PlayerName} {ChatColors.White} acesse nosso site e concorra a prêmios em SKIN todo mês");
-            player.PrintToChat($" {ChatColors.Green}Torne-se um membro VIP {ChatColors.LightYellow}★ {ChatColors.Green} e aproveite várias vantagens, além de participar de sorteios exclusivos!");
+            player.PrintToChat($" {ChatColors.Green}Torne-se um membro VIP {ChatColors.LightYellow}🜲 {ChatColors.Green} e aproveite várias vantagens, além de participar de sorteios exclusivos!");
             player.PrintToChat($" {ChatColors.White}Faça parte da nossa comunidade: {ChatColors.Green}!discord !whatsapp");
 
             if (Config.WelcomeMessageEnable)
